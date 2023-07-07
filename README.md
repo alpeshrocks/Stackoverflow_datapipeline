@@ -2,7 +2,9 @@
 
 The Stack Overflow Data Pipeline is a Python script that fetches data from the Stack Overflow API and saves it into separate CSV files. The script retrieves data for questions, posts, users, tags, and comments, and transforms the date fields from seconds format to 'dd-mm-yyyy' format before storing them in the CSV files.
 We can run complex business queries on this data by filtering it according to the requirements in any Data Analysis tool or in Python code.
-Most of the API's are open and don't require authentication.
+Most of the APIs are open and don't require authentication.
+
+** I have also committed logs and data files which I'm aware is a bad practice but just for your reference. **
 ## Installation
 
 1. Clone the repository:
