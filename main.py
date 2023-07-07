@@ -7,6 +7,12 @@ from datetime import datetime
 
 class StackOverflowDataPipeline:
     def __init__(self, output_dir):
+        """
+        Initializes the StackOverflowDataPipeline.
+
+        Args:
+            output_dir (str): The output directory for CSV files.
+        """
         self.base_url = "https://api.stackexchange.com/2.3"
         self.output_dir = output_dir
         self.logger = self.setup_logger()
@@ -53,11 +59,13 @@ class StackOverflowDataPipeline:
         Returns:
             list: List of data items.
         """
-        response = requests.get(endpoint, params=params)
-        if response.status_code == 200:
+        try:
+            response = requests.get(endpoint, params=params)
+            response.raise_for_status()  # Raises an exception for non-2xx status codes
             return response.json()["items"]
-        self.logger.error(f"Failed to fetch data from {endpoint}. Error: {response.text}")
-        return None
+        except requests.exceptions.RequestException as e:
+            self.logger.error(f"Failed to fetch data from {endpoint}. Error: {e}")
+            return None
 
     def write_to_csv(self, data, csv_file):
         """
@@ -70,10 +78,13 @@ class StackOverflowDataPipeline:
         if data:
             fieldnames = data[0].keys()
             transformed_data = self.transform_dates(data)
-            with open(csv_file, "w", newline="", encoding="utf-8") as file:
-                writer = csv.DictWriter(file, fieldnames=fieldnames, extrasaction='ignore')
-                writer.writeheader()
-                writer.writerows(transformed_data)
+            try:
+                with open(csv_file, "w", newline="", encoding="utf-8") as file:
+                    writer = csv.DictWriter(file, fieldnames=fieldnames, extrasaction='ignore')
+                    writer.writeheader()
+                    writer.writerows(transformed_data)
+            except IOError as e:
+                self.logger.error(f"Failed to write to CSV file: {csv_file}. Error: {e}")
 
     def transform_dates(self, data):
         """
@@ -232,7 +243,7 @@ def parse_arguments():
     Returns:
         argparse.Namespace: Parsed arguments.
     """
-    parser = argparse.ArgumentParser(description="Stack Overflow Data Pipeline")
+    parser = argparse.ArgumentParser(description="Stack Overflow DataPipeline")
     parser.add_argument("--output-dir", "-o", default="output", help="Output directory for CSV files")
     return parser.parse_args()
 
