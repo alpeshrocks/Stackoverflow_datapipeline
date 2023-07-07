@@ -4,7 +4,7 @@ The Stack Overflow Data Pipeline is a Python script that fetches data from the S
 We can run complex business queries on this data by filtering it according to the requirements in any Data Analysis tool or in Python code.
 Most of the APIs are open and don't require authentication.
 
-** I have also committed logs and data files which I'm aware is a bad practice but just for your reference. **
+**I have also committed logs and data files which I'm aware is a bad practice but just for your reference.**
 ## Installation
 
 1. Clone the repository:
