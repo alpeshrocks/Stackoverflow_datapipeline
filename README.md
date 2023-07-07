@@ -10,7 +10,7 @@ Most of the APIs are open and don't require authentication.
 1. Clone the repository:
 
    ```shell
-   https://github.com/alpeshrocks/Stackoverflow_datapipeline.git
+   git clone https://github.com/alpeshrocks/Stackoverflow_datapipeline.git
    ```
 2. Setup
     ```shell
